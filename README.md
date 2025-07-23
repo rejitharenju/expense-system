@@ -23,6 +23,7 @@
 
 ## Module Structure
 
+```text
 Modules/Expenses/
 ├── config/
 ├── database/
@@ -46,6 +47,7 @@ Modules/Expenses/
 └── tests/
     ├── Feature/
     └── Unit/
+
 
 ## Decisions
 - Used modular architecture for domain isolation.
