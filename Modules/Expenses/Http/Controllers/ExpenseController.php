@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Expenses\Services\ExpenseService;
 use Modules\Expenses\Http\Resources\ExpenseResource;
-use Modules\Expenses\Entities\Expense;
 
 class ExpenseController extends Controller
 {
@@ -21,10 +20,10 @@ class ExpenseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $req, ExpenseService $svc)
+    public function index(Request $req)
     {
         $filters = $req->only(['category', 'date_from', 'date_to']);
-        $expenses = $svc->list($filters);
+        $expenses = $this->expenseService->list($filters);
         return response()->json(ExpenseResource::collection($expenses), Response::HTTP_OK);
     }
 
@@ -39,7 +38,7 @@ class ExpenseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $req, ExpenseService $svc)
+    public function store(Request $req)
     {
         $data = $req->validate([
             'title' => 'required|string',
@@ -48,7 +47,7 @@ class ExpenseController extends Controller
             'expense_date' => 'required|date',
             'notes' => 'nullable|string',
         ]);
-        $expense = $svc->create($data);
+        $expense = $this->expenseService->create($data);
         event(new \Modules\Expenses\Events\ExpenseCreated($expense));
         return response()->json(new ExpenseResource($expense), Response::HTTP_CREATED);
     }
@@ -74,7 +73,7 @@ class ExpenseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $expense = Expense::findOrFail($id);
+        $expense = $this->expenseService->find($id);
         $updatedExpense = $this->expenseService->update($expense, $request->all());
         return response()->json(new ExpenseResource($updatedExpense), Response::HTTP_OK);
     }
@@ -84,7 +83,7 @@ class ExpenseController extends Controller
      */
     public function destroy($id)
     {
-        $expense = Expense::findOrFail($id);
+        $expense = $this->expenseService->find($id);
         $this->expenseService->delete($expense);
         return response()->json(['message' => 'Expense deleted successfully'], Response::HTTP_NO_CONTENT);
     }

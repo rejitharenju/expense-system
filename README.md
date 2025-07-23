@@ -54,6 +54,7 @@ Modules/Expenses/
 - Used modular architecture for domain isolation.
 - Form Request validation inline.
 - Service layer (`ExpenseService`) for business logic.
+- Implemented Repository Pattern to abstract data access and improve code maintainability and testability
 - Resource & Event/Notification for clean API and plugin extendability.
 - Scribe for API docs — annotate in controller.
 - Feature test to assert core flow.

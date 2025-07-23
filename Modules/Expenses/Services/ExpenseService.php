@@ -2,23 +2,34 @@
 
 namespace Modules\Expenses\Services;
 
-use Modules\Expenses\Entities\Expense;
+use Modules\Expenses\Repositories\ExpenseRepositoryInterface;
 
 class ExpenseService
 {
-    public function create(array $data): Expense
+    protected $expenseRepo;
+
+    public function __construct(ExpenseRepositoryInterface $expenseRepo)
     {
-        return Expense::create($data);
+        $this->expenseRepo = $expenseRepo;
     }
 
-    public function update(Expense $expense, array $data): Expense
+    public function list(array $filters = [])
     {
-        $expense->update($data);
-        return $expense;
+        return $this->expenseRepo->all($filters);
     }
 
-    public function delete(Expense $expense): bool
+    public function create(array $data)
     {
-        return $expense->delete();
+        return $this->expenseRepo->create($data);
+    }
+
+    public function update($expense, array $data)
+    {
+        return $this->expenseRepo->update($expense->id, $data);
+    }
+
+    public function delete($expense)
+    {
+        return $this->expenseRepo->delete($expense->id);
     }
 }
