@@ -79,6 +79,12 @@ Each expense has the following fields:
 - Delete an expense
 - Optional: Filter by category and date range
 
+## Running Tests
+- To run all tests using Laravel’s test runner:
+  php artisan test
+  Or to run a specific test class (e.g., ExpenseTest):
+  vendor/bin/phpunit --filter ExpenseTest
+
 ## Time Spent
 ~4 hours
 
