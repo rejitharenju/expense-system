@@ -4,6 +4,7 @@ namespace Modules\Expenses\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Modules\Expenses\Services\ExpenseService;
 use Modules\Expenses\Http\Resources\ExpenseResource;
 use Modules\Expenses\Entities\Expense;
@@ -24,7 +25,7 @@ class ExpenseController extends Controller
     {
         $filters = $req->only(['category', 'date_from', 'date_to']);
         $expenses = $svc->list($filters);
-        return ExpenseResource::collection($expenses);
+        return response()->json(ExpenseResource::collection($expenses), Response::HTTP_OK);
     }
 
     /**
@@ -49,7 +50,7 @@ class ExpenseController extends Controller
         ]);
         $expense = $svc->create($data);
         event(new \Modules\Expenses\Events\ExpenseCreated($expense));
-        return new ExpenseResource($expense);
+        return response()->json(new ExpenseResource($expense), Response::HTTP_CREATED);
     }
 
     /**
@@ -75,7 +76,7 @@ class ExpenseController extends Controller
     {
         $expense = Expense::findOrFail($id);
         $updatedExpense = $this->expenseService->update($expense, $request->all());
-        return response()->json($updatedExpense);
+        return response()->json(new ExpenseResource($updatedExpense), Response::HTTP_OK);
     }
 
     /**
@@ -85,6 +86,6 @@ class ExpenseController extends Controller
     {
         $expense = Expense::findOrFail($id);
         $this->expenseService->delete($expense);
-        return response()->json(['message' => 'Expense deleted successfully']);
+        return response()->json(['message' => 'Expense deleted successfully'], Response::HTTP_NO_CONTENT);
     }
 }

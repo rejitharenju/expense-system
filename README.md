@@ -7,6 +7,7 @@
 - Eloquent ORM
 - Service Layer
 - API Routes (defined in `routes/api.php`)
+- Proper HTTP status codes are handled using Laravel’s response() helper and Symfony Response constants.
 - HTTP status codes handled using Response Facade
 - Resource and ResourceCollection used for formatting responses
 - Scribe for API documentation
