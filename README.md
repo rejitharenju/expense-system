@@ -21,6 +21,9 @@
 3. `php artisan migrate`
 4. `php artisan module:make Expenses` 
 5. `php artisan module:migrate Expenses`
+6. *(Optional)* Serve the app using PHP built-in server:
+   ```bash
+   php -S localhost:8000 -t public
 
 ## Module Structure
 
